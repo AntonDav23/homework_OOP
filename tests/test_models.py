@@ -1,7 +1,7 @@
 import pytest
 from src.models import Product, Category
 
-
+# Тесты для класса Product
 def test_product_initialization():
     """
     Проверяет, что объект Product корректно инициализируется
@@ -57,8 +57,7 @@ def test_product_new_product_classmethod():
     assert product.price == 999.99
 
 
-# --- Тесты для класса Category ---
-
+# Тесты для класса Category
 def test_category_initialization():
     """
     Проверяет корректность инициализации объекта Category.
