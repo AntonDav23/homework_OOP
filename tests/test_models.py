@@ -1,5 +1,5 @@
 import pytest
-from src.models import Product, Category
+from src.models import Product, Category, CategoryIterator
 
 # Тесты для класса Product
 def test_product_initialization():
@@ -21,7 +21,7 @@ def test_product_price_setter_valid():
     если передано положительное значение.
     """
     product = Product("Товар", "...", 100, 5)
-    product.price = 200.0  # Используем сеттер
+    product.price = 200.0
 
     assert product.price == 200.0
 
@@ -33,7 +33,6 @@ def test_product_price_setter_invalid():
     """
     product = Product("Товар", "...", 100, 5)
 
-    # Сеттер должен вывести сообщение и не изменить цену
     product.price = -50.0
 
     assert product.price == 100.0
@@ -57,6 +56,25 @@ def test_product_new_product_classmethod():
     assert product.price == 999.99
 
 
+def test_product_str_representation():
+    """Проверяет строковое отображение объекта Product через __str__."""
+    product = Product("Смартфон", "Новый флагман", 99999.0, 5)
+    expected_str = "Смартфон, 99999.0 руб. Остаток: 5 шт."
+    assert str(product) == expected_str
+
+
+def test_product_addition():
+    """Проверяет логику сложения двух товаров (__add__) для получения общей стоимости."""
+    a = Product("Товар А", "", 100.0, 10)  # Стоимость склада: 100 * 10 = 1000
+    b = Product("Товар Б", "", 200.0, 2)  # Стоимость склада: 200 * 2 = 400
+
+    result = a + b
+    expected_total = 1400.0
+
+    assert result == expected_total
+    assert isinstance(result, float)
+
+
 # Тесты для класса Category
 def test_category_initialization():
     """
@@ -69,27 +87,65 @@ def test_category_initialization():
     assert category.name == "Тестовая категория"
     assert category.description == "Описание категории"
 
-    # Проверяем геттер products
     result_str = category.products
     assert isinstance(result_str, str)
     assert "Товар для категории" in result_str
 
 
 def test_category_add_product():
-    """
-    Проверяет, что метод add_product() корректно добавляет новый товар
-    в приватный список товаров категории и обновляет счетчик.
-    Также проверяет работу геттера products для пустой и непустой категории.
-    """
-    category = Category("Пустая категория", "...")
+    """Проверяет метод add_product() и обновление глобальных счетчиков класса"""
+    Category.category_count = 0
+    Category.product_count = 0
 
-    # Проверяем геттер для пустой категории
-    assert category.products == "Товаров в категории нет."
+    category = Category("Пустая категория", "")
+    assert len(category._product_list) == 0
 
     new_prod = Product("Новый товар", "...", 500, 1)
     category.add_product(new_prod)
 
-    # Проверяем геттер после добавления товара
-    result_str = category.products
-    assert isinstance(result_str, str)
-    assert "Новый товар" in result_str
+    assert len(category._product_list) == 1
+    assert Category.category_count == 1
+    assert Category.product_count == 1
+
+
+def test_category_str_representation():
+    """Проверяет строковое отображение объекта Category через __str__."""
+    p1 = Product("A", "", 10, 2)  # Количество: 2
+    p2 = Product("B", "", 20, 3)  # Количество: 3
+    Category.category_count = 0  # Сброс для чистоты теста
+    category = Category("Электроника", "", [p1, p2])
+
+    expected_str = "Электроника, количество продуктов: 5 шт."
+    assert str(category) == expected_str
+
+
+def test_category_iterator():
+    """Проверяет работу класса-итератора CategoryIterator. Проверяет методы __iter__ и __next__"""
+    p1 = Product("Книга 1", "", 500, 1)
+    p2 = Product("Книга 2", "", 600, 1)
+    p3 = Product("Книга 3", "", 700, 1)
+
+    category = Category("Книги", "", [p1, p2, p3])
+
+    iterator = CategoryIterator(category)
+
+    collected_products = list(iterator)
+
+    assert len(collected_products) == 3
+    assert collected_products[0].name == "Книга 1"
+    assert collected_products[1].name == "Книга 2"
+    assert collected_products[2].name == "Книга 3"
+
+
+def test_for_loop_iteration_over_category():
+    """Проверяет возможность использования итератора в цикле for напрямую"""
+    p1 = Product("Монитор", "", 15000, 2)
+    p2 = Product("Мышь", "", 2000, 5)
+
+    category = Category("Периферия", "", [p1, p2])
+
+    names_in_loop = []
+    for product in CategoryIterator(category):
+        names_in_loop.append(product.name)
+
+    assert names_in_loop == ["Монитор", "Мышь"]
