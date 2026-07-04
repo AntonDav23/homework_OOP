@@ -1,4 +1,4 @@
-from typing import Dict, List, Iterator
+from typing import Dict, Iterator, List
 
 
 class Product:
@@ -11,7 +11,7 @@ class Product:
         self.price = price
 
     @classmethod
-    def new_product(cls, data: Dict) -> 'Product':
+    def new_product(cls, data: Dict) -> "Product":
         """Класс-метод для создания объекта Product из словаря"""
         return cls(name=data["name"], description=data["description"], price=data["price"], quantity=data["quantity"])
 
@@ -32,7 +32,7 @@ class Product:
         """Возвращает строку вида: Название продукта, X руб. Остаток: X шт."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other: 'Product') -> float:
+    def __add__(self, other: "Product") -> float:
         """Реализует сложение двух объектов Product. Возвращает общую стоимость склада этих двух товаров"""
         if not isinstance(other, Product):
             return NotImplemented
@@ -44,10 +44,11 @@ class Product:
 
 class Category:
     """Класс для представления категории товаров. Список товаров является приватным атрибутом"""
+
     category_count = 0
     product_count = 0
 
-    def __init__(self, name: str, description: str, products: List[Product]  | None = None) -> None:
+    def __init__(self, name: str, description: str, products: List[Product] | None = None) -> None:
         self.name: str = name
         self.description: str = description
         self.__products: List[Product] = []
@@ -86,11 +87,12 @@ class Category:
 
 class CategoryIterator(Iterator):
     """Класс для итерации по товарам одной категории"""
+
     def __init__(self, category: Category):
         self._items = category._product_list
         self._index = 0
 
-    def __iter__(self) -> 'CategoryIterator':
+    def __iter__(self) -> "CategoryIterator":
         """Метод возвращает сам объект-итератор."""
         return self
 
