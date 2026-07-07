@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict
 
 
 class Product:
@@ -29,13 +29,13 @@ class Product:
             self.__price = value
 
     def __str__(self) -> str:
-        """Возвращает строку вида: Название продукта, X руб. Остаток: X шт."""
+        """Возвращает строку вида: Название продукта, X руб. Остаток: X шт. """
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: "Product") -> float:
-        """Реализует сложение двух объектов Product. Возвращает общую стоимость склада этих двух товаров"""
-        if not isinstance(other, Product):
-            return NotImplemented
+        """ Реализует сложение двух объектов Product """
+        if type(self) is not type(other):
+            raise TypeError(f"Нельзя складывать товары разных типов: {type(self).__name__} и {type(other).__name__}")
 
         total_a = self.price * self.quantity
         total_b = other.price * other.quantity
