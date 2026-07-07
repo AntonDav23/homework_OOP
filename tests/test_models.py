@@ -1,5 +1,5 @@
 import pytest
-from src.models import Product, Category, CategoryIterator
+from src import Product, Category, CategoryIterator
 
 # Тесты для класса Product
 def test_product_initialization():
