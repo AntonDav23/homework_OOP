@@ -1,42 +1,35 @@
+from abc import ABC, abstractmethod
 from typing import Dict
 
 
-class Product:
-    """Базовый (родительский) класс для предоставления товара"""
+class BaseProduct(ABC):
+    """ Абстрактный базовый класс для всех продуктов """
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
-        self.name: str = name
-        self.description: str = description
-        self.quantity: int = quantity
-        self.price = price
-
-    @classmethod
-    def new_product(cls, data: Dict) -> "Product":
-        """Класс-метод для создания объекта Product из словаря"""
-        return cls(name=data["name"], description=data["description"], price=data["price"], quantity=data["quantity"])
+        self.name = name
+        self.description = description
+        self.quantity = quantity
+        self._price = price  # Защищенный атрибут для доступа через property
 
     @property
+    @abstractmethod
     def price(self) -> float:
-        """Геттер для приватного атрибута цены"""
-        return self.__price
+        """Геттер для цены. Должен быть реализован в дочерних классах."""
+        pass
 
     @price.setter
+    @abstractmethod
     def price(self, value: float) -> None:
-        """Сеттер для цены с валидацией"""
-        if value <= 0:
-            print("Цена не должна быть нулевая или отрицательная")
-        else:
-            self.__price = value
+        """Сеттер для цены с валидацией."""
+        pass
 
+    @abstractmethod
     def __str__(self) -> str:
-        """Возвращает строку вида: Название продукта, X руб. Остаток: X шт."""
-        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+        """ Строковое представление товара. Каждый продукт должен уметь выводить себя в консоль по-своему """
+        pass
 
-    def __add__(self, other: "Product") -> float:
-        """Реализует сложение двух объектов Product"""
-        if type(self) is not type(other):
-            raise TypeError(f"Нельзя складывать товары разных типов: {type(self).__name__} и {type(other).__name__}")
-
-        total_a = self.price * self.quantity
-        total_b = other.price * other.quantity
-        return total_a + total_b
+    @classmethod
+    @abstractmethod
+    def new_product(cls, data: Dict[str, object]) -> 'BaseProduct':
+        """ метод для создания объекта из словаря """
+        pass

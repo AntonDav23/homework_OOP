@@ -1,6 +1,6 @@
 from typing import Iterator, List
 
-from .base_product import Product
+from .product import Product
 
 
 class Category:

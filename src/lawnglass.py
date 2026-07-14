@@ -1,4 +1,4 @@
-from .base_product import Product
+from .product import Product
 
 
 class LawnGrass(Product):
