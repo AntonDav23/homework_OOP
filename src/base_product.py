@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import Dict, Any
 
 
 class BaseProduct(ABC):
-    """ Абстрактный базовый класс для всех продуктов """
+    """Абстрактный базовый класс для всех продуктов"""
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
         self.name = name
@@ -23,21 +23,18 @@ class BaseProduct(ABC):
         """Сеттер для цены с валидацией."""
         pass
 
-
     @abstractmethod
     def __str__(self) -> str:
-        """ Строковое представление товара. Каждый продукт должен уметь выводить себя в консоль по-своему """
+        """Строковое представление товара. Каждый продукт должен уметь выводить себя в консоль по-своему"""
         pass
 
     @classmethod
     @abstractmethod
-    def new_product(cls, data: Dict[str, object]) -> 'BaseProduct':
-        """ Метод для создания объекта из словаря """
+    def new_product(cls, data: Dict[str, object]) -> "BaseProduct":
+        """Метод для создания объекта из словаря"""
         pass
-
 
     @abstractmethod
-    def __add__(self, other) -> float:
-        """ Определяет поведение оператора сложения """
+    def __add__(self, other: 'BaseProduct') -> float:
+        """Определяет поведение оператора сложения"""
         pass
-

@@ -1,7 +1,10 @@
-class CreationLoggerMixin:
-    """ Миксин для логирования создания объектов. Выводит в консоль имя класса и параметры инициализации """
+from typing import Any
 
-    def __init__(self, *args, **kwargs) -> None:
+
+class CreationLoggerMixin:
+    """Миксин для логирования создания объектов. Выводит в консоль имя класса и параметры инициализации"""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         args_repr = [repr(a) for a in args]
         kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]

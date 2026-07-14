@@ -1,8 +1,11 @@
-from src.product import Product
 from typing import Iterator, List
+
+from src.product import Product
+
 
 class Category:
     """Класс для представления категории товаров в магазине"""
+
     category_count: int = 0
     product_count: int = 0
 
@@ -25,27 +28,28 @@ class Category:
 
     @property
     def products(self) -> List[Product]:
-        """ Публичный геттер для получения списка товаров """
+        """Публичный геттер для получения списка товаров"""
         return self.__products.copy()
 
     @property
     def _product_list(self) -> List[Product]:
-        """Защищенный геттер для внутреннего использования """
+        """Защищенный геттер для внутреннего использования"""
         return self.__products
 
     def __str__(self) -> str:
-        """ Возвращает строковое представление категории"""
+        """Возвращает строковое представление категории"""
         total_quantity = sum(p.quantity for p in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
 
 class CategoryIterator(Iterator):
     """Вспомогательный класс-итератор для безопасного перебора товаров категории"""
+
     def __init__(self, category: Category):
         self._items = category._product_list
         self._index = 0
 
-    def __iter__(self) -> 'CategoryIterator':
+    def __iter__(self) -> "CategoryIterator":
         return self
 
     def __next__(self) -> Product:
