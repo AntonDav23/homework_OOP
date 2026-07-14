@@ -1,24 +1,18 @@
+from src.base_product import BaseProduct
+from src.product_mixin import CreationLoggerMixin
 from typing import Dict
 
 
-class Product:
-    """Базовый (родительский) класс для предоставления товара"""
+class Product(BaseProduct):
+    """ Класс реализации базового продукта """
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
-        self.name: str = name
-        self.description: str = description
-        self.quantity: int = quantity
-        self.price = price
-
-    @classmethod
-    def new_product(cls, data: Dict) -> "Product":
-        """Класс-метод для создания объекта Product из словаря"""
-        return cls(name=data["name"], description=data["description"], price=data["price"], quantity=data["quantity"])
+        super().__init__(name, description, price, quantity)
 
     @property
     def price(self) -> float:
-        """Геттер для приватного атрибута цены"""
-        return self.__price
+       """Геттер для приватного атрибута цены"""
+       return self.__price
 
     @price.setter
     def price(self, value: float) -> None:
@@ -40,3 +34,35 @@ class Product:
         total_a = self.price * self.quantity
         total_b = other.price * other.quantity
         return total_a + total_b
+
+
+    @classmethod
+    def new_product(cls, data: Dict[str, object]) -> 'Product':
+        return cls(name=data['name'],description=data['description'], price=data['price'], quantity=data['quantity'])
+
+
+class LoggedProduct(CreationLoggerMixin, BaseProduct):
+    """ Промежуточный класс, объединяющий логику логирования и структуры продукта """
+
+    def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+        super().__init__(name, description, price, quantity)
+
+    @property
+    def price(self) -> float:
+        return self._price
+
+    @price.setter
+    def price(self, value: float) -> None:
+        if value <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+        else:
+            self._price = value
+
+    def __str__(self) -> str:
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    @classmethod
+    def new_product(cls, data: Dict[str, object]) -> 'LoggedProduct':
+        return cls(name=data['name'], description=data['description'], price=data['price'], quantity=data['quantity'])
+
+Product = LoggedProduct

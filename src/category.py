@@ -1,7 +1,5 @@
+from src.product import Product
 from typing import Iterator, List
-
-from .product import Product
-
 
 class Category:
     """Класс для представления категории товаров в магазине"""
@@ -26,8 +24,13 @@ class Category:
         Category.product_count += 1
 
     @property
+    def products(self) -> List[Product]:
+        """ Публичный геттер для получения списка товаров """
+        return self.__products.copy()
+
+    @property
     def _product_list(self) -> List[Product]:
-        """Защищенный геттер для доступа к списку товаров"""
+        """Защищенный геттер для внутреннего использования """
         return self.__products
 
     def __str__(self) -> str:
