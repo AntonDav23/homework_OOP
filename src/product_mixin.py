@@ -8,3 +8,4 @@ class CreationLoggerMixin:
         signature = ", ".join(args_repr + kwargs_repr)
 
         print(f"Создан объект {self.__class__.__name__}({signature})")
+        super().__init__(*args, **kwargs)

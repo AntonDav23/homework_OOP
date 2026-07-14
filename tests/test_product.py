@@ -1,5 +1,5 @@
 import pytest
-from src import Product
+from src.product import Product
 
 
 def test_product_initialization():

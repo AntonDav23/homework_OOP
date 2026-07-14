@@ -23,6 +23,7 @@ class BaseProduct(ABC):
         """Сеттер для цены с валидацией."""
         pass
 
+
     @abstractmethod
     def __str__(self) -> str:
         """ Строковое представление товара. Каждый продукт должен уметь выводить себя в консоль по-своему """
@@ -31,5 +32,12 @@ class BaseProduct(ABC):
     @classmethod
     @abstractmethod
     def new_product(cls, data: Dict[str, object]) -> 'BaseProduct':
-        """ метод для создания объекта из словаря """
+        """ Метод для создания объекта из словаря """
         pass
+
+
+    @abstractmethod
+    def __add__(self, other) -> float:
+        """ Определяет поведение оператора сложения """
+        pass
+
