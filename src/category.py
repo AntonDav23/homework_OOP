@@ -32,6 +32,15 @@ class Category:
         return self.__products.copy()
 
     @property
+    def products_info(self) -> str:
+        """ Возвращает отформатированную строку со всеми товарами в категории """
+        if not self.__products:
+            return "Товаров в категории нет."
+
+        lines = [str(product) for product in self.__products]
+        return "\n".join(lines)
+
+    @property
     def _product_list(self) -> List[Product]:
         """Защищенный геттер для внутреннего использования"""
         return self.__products

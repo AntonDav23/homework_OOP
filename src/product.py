@@ -27,6 +27,10 @@ class Product(CreationLoggerMixin, BaseProduct):
         """Возвращает строку вида: Название продукта, X руб. Остаток: X шт."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
+    def __repr__(self):
+        return self.__str__()
+
+
     @classmethod
     def new_product(cls, data: Dict) -> "Product":
         return cls(name=data["name"], description=data["description"], price=data["price"], quantity=data["quantity"])
