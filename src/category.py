@@ -33,7 +33,7 @@ class Category:
 
     @property
     def products_info(self) -> str:
-        """ Возвращает отформатированную строку со всеми товарами в категории """
+        """Возвращает отформатированную строку со всеми товарами в категории"""
         if not self.__products:
             return "Товаров в категории нет."
 
@@ -51,7 +51,7 @@ class Category:
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def middle_price(self) -> float:
-        """ Рассчитывает среднюю цену одного товара в категории """
+        """Рассчитывает среднюю цену одного товара в категории"""
         try:
             total_sum = sum(product.price for product in self.__products)
             count = len(self.__products)
