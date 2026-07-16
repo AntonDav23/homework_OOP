@@ -50,6 +50,16 @@ class Category:
         total_quantity = sum(p.quantity for p in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
+    def middle_price(self) -> float:
+        """ Рассчитывает среднюю цену одного товара в категории """
+        try:
+            total_sum = sum(product.price for product in self.__products)
+            count = len(self.__products)
+            return total_sum / count
+
+        except ZeroDivisionError:
+            return 0.0
+
 
 class CategoryIterator(Iterator):
     """Вспомогательный класс-итератор для безопасного перебора товаров категории"""
