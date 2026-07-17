@@ -33,7 +33,7 @@ class Category:
 
     @property
     def products_info(self) -> str:
-        """ Возвращает отформатированную строку со всеми товарами в категории """
+        """Возвращает отформатированную строку со всеми товарами в категории"""
         if not self.__products:
             return "Товаров в категории нет."
 
@@ -49,6 +49,16 @@ class Category:
         """Возвращает строковое представление категории"""
         total_quantity = sum(p.quantity for p in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
+
+    def middle_price(self) -> float:
+        """Рассчитывает среднюю цену одного товара в категории"""
+        try:
+            total_sum = sum(product.price for product in self.__products)
+            count = len(self.__products)
+            return total_sum / count
+
+        except ZeroDivisionError:
+            return 0.0
 
 
 class CategoryIterator(Iterator):

@@ -1,13 +1,15 @@
 from typing import Dict
 
-from .base_product import BaseProduct
-from .product_mixin import CreationLoggerMixin
+from src.base_product import BaseProduct
+from src.product_mixin import CreationLoggerMixin
 
 
 class Product(CreationLoggerMixin, BaseProduct):
     """Класс реализации базового продукта"""
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
         super().__init__(name, description, price, quantity)
 
     @property
@@ -27,9 +29,8 @@ class Product(CreationLoggerMixin, BaseProduct):
         """Возвращает строку вида: Название продукта, X руб. Остаток: X шт."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
-
 
     @classmethod
     def new_product(cls, data: Dict) -> "Product":
